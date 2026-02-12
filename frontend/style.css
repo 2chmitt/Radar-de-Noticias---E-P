@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(180deg, #0b0f19, #111827);
+    color: #ffffff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* SELECT ESCURO CORRIGIDO */
+.select-periodo {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background-color: #1f2937;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* opções visíveis */
+.select-periodo option {
+    background-color: #1f2937;
+    color: #ffffff;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    background: #0071e3;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #005bb5;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+#info {
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.card-date {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 8px;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.card-source {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 10px;
+}
+
+.card-relevancia {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* CORES DINÂMICAS */
+
+.card-medium {
+    border: 1px solid rgba(255, 193, 7, 0.8);
+    background: rgba(255, 193, 7, 0.15);
+}
+
+.card-high {
+    border: 1px solid rgba(220, 53, 69, 0.9);
+    background: rgba(220, 53, 69, 0.2);
+}
+
+.card a {
+    text-decoration: none;
+    color: #4ea1ff;
+    font-size: 13px;
+}

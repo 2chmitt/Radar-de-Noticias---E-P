@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Radar Petróleo Brasil</title>
+    <link rel="icon" type="image/png" href="/static/imagem1.png">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">🛢 Radar Petróleo Brasil</div>
+
+    <div class="controls">
+        <select id="periodoSelect" class="select-periodo">
+            <option value="7">Últimos 7 dias</option>
+            <option value="15">Últimos 15 dias</option>
+            <option value="30">Últimos 30 dias</option>
+            <option value="60">Últimos 60 dias</option>
+        </select>
+
+        <button id="buscarBtn" class="btn-primary">
+            Atualizar Notícias
+        </button>
+    </div>
+</header>
+
+<main class="container">
+    <div id="info"></div>
+    <div id="resultado" class="grid"></div>
+</main>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
