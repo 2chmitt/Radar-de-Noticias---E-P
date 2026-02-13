@@ -3,33 +3,27 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import feedparser
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os
 import urllib.parse
-import time
 
 app = FastAPI()
 
 # =========================
-# CORS (Render-safe)
+# CORS
 # =========================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # depois pode restringir
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # =========================
-# CAMINHOS (IMPORTANTE PARA RENDER)
+# CAMINHOS
 # =========================
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, "..", "frontend")
-
-# =========================
-# SERVIR ARQUIVOS ESTÁTICOS
-# =========================
 
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
@@ -40,7 +34,6 @@ def serve_frontend():
 # =========================
 # FONTES PERMITIDAS
 # =========================
-
 ALLOWED_PUBLISHERS = [
     "Valor Econômico",
     "Reuters",
@@ -63,9 +56,8 @@ ALLOWED_PUBLISHERS = [
 ]
 
 # =========================
-# TERMOS E&P
+# TERMOS EXPLORAÇÃO & PRODUÇÃO
 # =========================
-
 KEY_TERMS = [
     "petróleo", "óleo", "petrobras", "anp",
     "exploração", "perfuração", "produção",
@@ -80,7 +72,7 @@ KEY_TERMS = [
 MIN_RELEVANCIA = 2
 
 # =========================
-# FUNÇÕES
+# FUNÇÕES AUXILIARES
 # =========================
 
 def normalizar(txt):
@@ -111,8 +103,17 @@ def get_publisher(entry):
 @app.get("/buscar-noticias")
 def buscar_noticias(dias: int = Query(7, ge=1, le=90)):
 
-    hoje = datetime.now()
-    limite = hoje - timedelta(days=dias)
+    # 🔥 TIMEZONE BRASIL
+    tz_brasil = timezone(timedelta(hours=-3))
+    agora = datetime.now(tz_brasil)
+
+    if dias == 1:
+        # Apenas o dia atual
+        limite_inferior = agora.replace(hour=0, minute=0, second=0, microsecond=0)
+        limite_superior = agora.replace(hour=23, minute=59, second=59, microsecond=999999)
+    else:
+        limite_inferior = agora - timedelta(days=dias)
+        limite_superior = agora
 
     resultados = []
     vistos = set()
@@ -142,14 +143,14 @@ def buscar_noticias(dias: int = Query(7, ge=1, le=90)):
 
         for entry in feed.entries:
 
-            data_publicacao = None
+            if not entry.get("published_parsed"):
+                continue
 
-            if entry.get("published_parsed"):
-                data_publicacao = datetime.fromtimestamp(
-                    time.mktime(entry.published_parsed)
-                )
+            # 🔥 CONVERSÃO CORRETA UTC → BRASIL
+            data_utc = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
+            data_publicacao = data_utc.astimezone(tz_brasil)
 
-            if not data_publicacao or data_publicacao < limite:
+            if not (limite_inferior <= data_publicacao <= limite_superior):
                 continue
 
             publisher = get_publisher(entry)
@@ -182,7 +183,7 @@ def buscar_noticias(dias: int = Query(7, ge=1, le=90)):
     )
 
     return {
-        "periodo": f"Últimos {dias} dias",
+        "periodo": "Hoje" if dias == 1 else f"Últimos {dias} dias",
         "quantidade": len(resultados),
         "noticias": resultados
     }
