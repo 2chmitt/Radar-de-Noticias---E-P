@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Radar Petróleo Brasil</title>
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/static/imagem1.png">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -12,8 +16,15 @@
     <div class="logo">🛢 Radar Petróleo Brasil</div>
 
     <div class="controls">
+
         <select id="periodoSelect" class="select-periodo">
-            <option value="7">Últimos 7 dias</option>
+            <option value="1">Hoje</option>
+            <option value="2">Últimos 2 dias</option>
+            <option value="3">Últimos 3 dias</option>
+            <option value="4">Últimos 4 dias</option>
+            <option value="5">Últimos 5 dias</option>
+            <option value="6">Últimos 6 dias</option>
+            <option value="7" selected>Últimos 7 dias</option>
             <option value="15">Últimos 15 dias</option>
             <option value="30">Últimos 30 dias</option>
             <option value="60">Últimos 60 dias</option>
@@ -22,6 +33,7 @@
         <button id="buscarBtn" class="btn-primary">
             Atualizar Notícias
         </button>
+
     </div>
 </header>
 
@@ -30,6 +42,57 @@
     <div id="resultado" class="grid"></div>
 </main>
 
-<script src="/static/script.js"></script>
+<script>
+document.getElementById("buscarBtn").addEventListener("click", async () => {
+
+    const resultadoDiv = document.getElementById("resultado");
+    const infoDiv = document.getElementById("info");
+
+    // 🔥 Garantir que é número
+    const dias = parseInt(document.getElementById("periodoSelect").value);
+
+    resultadoDiv.innerHTML = "";
+    infoDiv.innerHTML = "Buscando notícias...";
+
+    try {
+        const response = await fetch(`/buscar-noticias?dias=${dias}`);
+        const data = await response.json();
+
+        infoDiv.innerHTML = `
+            Período: ${data.periodo} |
+            Total encontrado: ${data.quantidade}
+        `;
+
+        data.noticias.forEach(noticia => {
+
+            const card = document.createElement("div");
+            card.classList.add("card");
+
+            if (noticia.relevancia >= 6) {
+                card.classList.add("card-high");
+            } else if (noticia.relevancia >= 3) {
+                card.classList.add("card-medium");
+            }
+
+            card.innerHTML = `
+                <div class="card-date">${noticia.data}</div>
+                <div class="card-title">${noticia.titulo}</div>
+                <div class="card-source">${noticia.fonte}</div>
+                <div class="card-relevancia">Relevância: ${noticia.relevancia}</div>
+                <a href="${noticia.link}" target="_blank" rel="noopener noreferrer">
+                    Ler matéria completa →
+                </a>
+            `;
+
+            resultadoDiv.appendChild(card);
+        });
+
+    } catch (error) {
+        infoDiv.innerHTML = "Erro ao buscar notícias.";
+    }
+
+});
+</script>
+
 </body>
 </html>
