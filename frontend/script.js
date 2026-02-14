@@ -1,47 +1,44 @@
-document.getElementById("buscarBtn").addEventListener("click", async () => {
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("buscarBtn");
+  const select = document.getElementById("periodoSelect");
+  const infoDiv = document.getElementById("info");
+  const resultDiv = document.getElementById("resultado");
 
-    const resultadoDiv = document.getElementById("resultado");
-    const infoDiv = document.getElementById("info");
-    const dias = document.getElementById("periodoSelect").value;
+  // Endpoint vem do BODY (index = royalties | fpm.html = fpm)
+  const endpoint = document.body.getAttribute("data-endpoint");
 
-    resultadoDiv.innerHTML = "";
+  btn.addEventListener("click", async () => {
+    const dias = parseInt(select.value, 10);
+
+    resultDiv.innerHTML = "";
     infoDiv.innerHTML = "Buscando notícias...";
 
     try {
-        const response = await fetch(`/buscar-noticias?dias=${dias}`);
-        const data = await response.json();
+      const resp = await fetch(`${endpoint}?dias=${dias}`);
+      const data = await resp.json();
 
-        infoDiv.innerHTML = `
-            Período: ${data.periodo} |
-            Total encontrado: ${data.quantidade}
+      infoDiv.innerHTML = `${data.tipo} | ${data.periodo} | Total encontrado: ${data.quantidade}`;
+
+      data.noticias.forEach((n) => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        // pintura por relevância (mantém sua lógica visual)
+        if (n.relevancia >= 6) card.classList.add("card-high");
+        else if (n.relevancia >= 3) card.classList.add("card-medium");
+
+        card.innerHTML = `
+          <div class="card-date">${n.data}</div>
+          <div class="card-title">${n.titulo}</div>
+          <div class="card-source">${n.fonte}</div>
+          <div class="card-relevancia">Relevância: ${n.relevancia}</div>
+          <a href="${n.link}" target="_blank" rel="noopener noreferrer">Ler matéria completa →</a>
         `;
 
-        data.noticias.forEach(noticia => {
-
-            const card = document.createElement("div");
-            card.classList.add("card");
-
-            // 🎯 Pintura por relevância
-            if (noticia.relevancia >= 6) {
-                card.classList.add("card-high");
-            } else if (noticia.relevancia >= 3) {
-                card.classList.add("card-medium");
-            }
-
-            card.innerHTML = `
-                <div class="card-date">${noticia.data}</div>
-                <div class="card-title">${noticia.titulo}</div>
-                <div class="card-source">${noticia.fonte}</div>
-                <div class="card-relevancia">Relevância: ${noticia.relevancia}</div>
-                <a href="${noticia.link}" target="_blank" rel="noopener noreferrer">
-                    Ler matéria completa →
-                </a>
-            `;
-
-            resultadoDiv.appendChild(card);
-        });
-
-    } catch (error) {
-        infoDiv.innerHTML = "Erro ao buscar notícias.";
+        resultDiv.appendChild(card);
+      });
+    } catch (e) {
+      infoDiv.innerHTML = "Erro ao buscar notícias.";
     }
+  });
 });
