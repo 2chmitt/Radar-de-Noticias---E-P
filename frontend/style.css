@@ -1,133 +1,242 @@
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(180deg, #0b0f19, #111827);
-    color: #ffffff;
+/* =====================================
+   RESET
+===================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(180deg, #0b1220 0%, #0f1b33 100%);
+  color: #e6edf3;
+  min-height: 100vh;
+}
+
+/* =====================================
+   TEMAS
+===================================== */
+
+body.theme-royalties {
+  --accent: #0071e3;
+  --accent-soft: rgba(0, 113, 227, 0.15);
+  --accent-border: rgba(0, 113, 227, 0.6);
+}
+
+body.theme-fpm {
+  --accent: #00b36b;
+  --accent-soft: rgba(0, 179, 107, 0.15);
+  --accent-border: rgba(0, 179, 107, 0.6);
+}
+
+/* =====================================
+   HEADER
+===================================== */
+
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 60px;
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(10, 20, 40, 0.7);
+  backdrop-filter: blur(8px);
 }
 
 .logo {
-    font-size: 22px;
-    font-weight: 600;
+  font-size: 20px;
+  font-weight: 600;
 }
+
+/* =====================================
+   TABS
+===================================== */
+
+.tabs {
+  display: flex;
+  gap: 12px;
+}
+
+.tab {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.tab:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.tab.active {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* =====================================
+   CONTROLS
+===================================== */
 
 .controls {
-    display: flex;
-    gap: 15px;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* SELECT ESCURO CORRIGIDO */
 .select-periodo {
-    padding: 8px 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background-color: #1f2937;
-    color: #ffffff;
-    font-size: 14px;
-    cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background-color: #1f2937;
+  color: #ffffff;
+  font-size: 14px;
 }
 
-/* opções visíveis */
 .select-periodo option {
-    background-color: #1f2937;
-    color: #ffffff;
+  background-color: #1f2937;
+  color: #ffffff;
 }
 
+/* Botão principal */
 .btn-primary {
-    padding: 10px 20px;
-    background: #0071e3;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .btn-primary:hover {
-    background: #005bb5;
+  opacity: 0.85;
 }
 
+/* =====================================
+   CONTAINER
+===================================== */
+
 .container {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 0 20px;
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 #info {
-    margin-bottom: 25px;
-    font-size: 14px;
-    color: #9ca3af;
+  margin-bottom: 24px;
+  font-size: 14px;
+  opacity: 0.8;
 }
+
+/* =====================================
+   GRID
+===================================== */
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
 }
 
+/* =====================================
+   CARD (Estilo Apple)
+===================================== */
+
 .card {
-    background: rgba(255,255,255,0.05);
-    border-radius: 20px;
-    padding: 20px;
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.08);
-    transition: 0.3s ease;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 24px;
+  transition: 0.2s ease;
+  backdrop-filter: blur(6px);
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255,255,255,0.2);
+  transform: translateY(-4px);
+  border-color: var(--accent-border);
 }
 
 .card-date {
-    font-size: 12px;
-    color: #9ca3af;
-    margin-bottom: 8px;
+  font-size: 12px;
+  opacity: 0.6;
+  margin-bottom: 8px;
 }
 
 .card-title {
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
 .card-source {
-    font-size: 12px;
-    color: #9ca3af;
-    margin-bottom: 10px;
+  font-size: 13px;
+  opacity: 0.7;
+  margin-bottom: 6px;
 }
 
 .card-relevancia {
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 12px;
-}
-
-/* CORES DINÂMICAS */
-
-.card-medium {
-    border: 1px solid rgba(255, 193, 7, 0.8);
-    background: rgba(255, 193, 7, 0.15);
-}
-
-.card-high {
-    border: 1px solid rgba(220, 53, 69, 0.9);
-    background: rgba(220, 53, 69, 0.2);
+  font-size: 13px;
+  margin-bottom: 12px;
+  font-weight: 500;
 }
 
 .card a {
-    text-decoration: none;
-    color: #4ea1ff;
-    font-size: 13px;
+  text-decoration: none;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+/* =====================================
+   RELEVÂNCIA VISUAL
+===================================== */
+
+.card-medium {
+  border: 1px solid rgba(255, 193, 7, 0.7);
+  background: rgba(255, 193, 7, 0.12);
+}
+
+.card-high {
+  border: 1px solid rgba(220, 53, 69, 0.9);
+  background: rgba(220, 53, 69, 0.18);
+}
+
+/* =====================================
+   RESPONSIVO
+===================================== */
+
+@media (max-width: 768px) {
+
+  .header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .select-periodo,
+  .btn-primary {
+    width: 100%;
+  }
+
+  .container {
+    padding: 20px;
+  }
 }
