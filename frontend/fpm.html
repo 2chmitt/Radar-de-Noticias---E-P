@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Radar de Notícias</title>
+  <link rel="icon" type="image/png" href="/static/imagem1.png">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="theme-fpm" data-endpoint="/buscar-fpm">
+  <header class="header">
+    <div class="logo">📊 Radar de Notícias</div>
+
+    <nav class="tabs">
+      <a class="tab" href="/">🛢 Royalties</a>
+      <a class="tab active" href="/fpm">🏛 FPM</a>
+    </nav>
+
+    <div class="controls">
+      <select id="periodoSelect" class="select-periodo">
+        <option value="1">Hoje</option>
+        <option value="2">Últimos 2 dias</option>
+        <option value="3">Últimos 3 dias</option>
+        <option value="4">Últimos 4 dias</option>
+        <option value="5">Últimos 5 dias</option>
+        <option value="6">Últimos 6 dias</option>
+        <option value="7" selected>Últimos 7 dias</option>
+        <option value="15">Últimos 15 dias</option>
+        <option value="30">Últimos 30 dias</option>
+        <option value="60">Últimos 60 dias</option>
+      </select>
+
+      <button id="buscarBtn" class="btn-primary">Pesquisar</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="info"></div>
+    <div id="resultado" class="grid"></div>
+  </main>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
