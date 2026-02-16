@@ -14,6 +14,7 @@
     <nav class="tabs">
       <a class="tab active" href="/">🛢 Royalties</a>
       <a class="tab" href="/fpm">🏛 FPM</a>
+      <a class="tab" href="/sobre">ℹ Sobre</a>
     </nav>
 
     <div class="controls">
@@ -28,6 +29,12 @@
         <option value="15">Últimos 15 dias</option>
         <option value="30">Últimos 30 dias</option>
         <option value="60">Últimos 60 dias</option>
+      </select>
+
+      <select id="metodoSelect" class="select-periodo">
+        <option value="google" selected>Google News</option>
+        <option value="rss">RSS Direto</option>
+        <option value="bing">Bing News</option>
       </select>
 
       <button id="buscarBtn" class="btn-primary">Pesquisar</button>
