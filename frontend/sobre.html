@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Sobre o Radar de Notícias</title>
+  <link rel="stylesheet" href="/static/style.css?v=999">
+</head>
+
+<body class="theme-royalties">
+  <header class="header">
+    <div class="logo">📊 Radar de Notícias</div>
+
+    <nav class="tabs">
+      <a class="tab" href="/">🛢 Royalties</a>
+      <a class="tab" href="/fpm">🏛 FPM</a>
+      <a class="tab active" href="/sobre">ℹ Sobre</a>
+    </nav>
+  </header>
+
+  <main class="container about-wrapper">
+
+    <!-- COMO FUNCIONA -->
+    <section class="about-section">
+      <h1>Como a pesquisa funciona</h1>
+
+      <div class="about-card">
+        <p>
+          O Radar de Notícias coleta matérias por diferentes <strong>métodos de busca</strong>
+          (Google News RSS, RSS Direto e Bing News RSS) e aplica filtros para exibir apenas
+          conteúdos alinhados a <strong>Royalties de Petróleo</strong> e <strong>FPM</strong>.
+        </p>
+
+        <div class="about-steps">
+          <div class="about-step">
+            <div class="about-step-title">1) Coleta (busca)</div>
+            <div class="about-step-text">
+              O sistema consulta feeds RSS/agregadores e recebe uma lista de notícias (título, resumo, link e data).
+              Cada método tem sua própria “base” de notícias (Google/Bing indexam; RSS Direto vem do próprio portal).
+            </div>
+          </div>
+
+          <div class="about-step">
+            <div class="about-step-title">2) Filtro por período</div>
+            <div class="about-step-text">
+              Apenas notícias dentro do intervalo escolhido (Hoje, 7 dias, 15 dias, etc.) são consideradas.
+              O sistema converte datas para o fuso do Brasil (UTC-3).
+            </div>
+          </div>
+
+          <div class="about-step">
+            <div class="about-step-title">3) Filtro por fonte (publisher)</div>
+            <div class="about-step-text">
+              A notícia só entra se a fonte/veículo estiver na lista de fontes consideradas válidas
+              (ex.: g1, Agência Brasil, Valor, ANP, IBGE, STF, etc.).
+            </div>
+          </div>
+
+          <div class="about-step">
+            <div class="about-step-title">4) Relevância (palavras-chave)</div>
+            <div class="about-step-text">
+              O sistema soma pontos quando encontra palavras-chave no <strong>título</strong> e no <strong>resumo</strong>.
+              Quanto mais termos aparecerem, maior a relevância.
+            </div>
+          </div>
+
+          <div class="about-step">
+            <div class="about-step-title">5) Ordenação</div>
+            <div class="about-step-text">
+              Resultados são ordenados priorizando <strong>maior relevância</strong> e, em seguida, <strong>mais recente</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÉTODOS -->
+    <section class="about-section">
+      <h2>Métodos de pesquisa</h2>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Google News (RSS)</h3>
+          <p>
+            O Google News oferece um feed RSS de busca. RSS (“Really Simple Syndication”) é um formato padronizado
+            para distribuir atualizações. Aqui, o Radar envia consultas (queries) ao Google News RSS e recebe uma lista
+            de matérias indexadas pelo Google.
+          </p>
+          <p class="muted">
+            Vantagem: ampla cobertura e variedade de portais indexados.
+          </p>
+
+          <div class="about-mini">
+            <div class="about-mini-title">Exemplos de queries usadas (Royalties/FPM)</div>
+            <ul class="about-ul">
+              <li>royalties de petróleo Brasil</li>
+              <li>royalties gás natural Brasil</li>
+              <li>ANP royalties</li>
+              <li>exploração de petróleo Brasil</li>
+              <li>processo judicial ANP</li>
+              <li>Fundo de Participação dos Municípios</li>
+              <li>coeficiente do FPM</li>
+              <li>repasse FPM municípios</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <h3>RSS Direto (portais)</h3>
+          <p>
+            O Radar consulta diretamente feeds RSS oficiais de portais e instituições, sem intermediadores.
+            Isso pode capturar publicações assim que o portal publica.
+          </p>
+          <p class="muted">
+            Vantagem: proximidade da fonte original e estabilidade institucional.
+          </p>
+
+          <div class="about-mini">
+            <div class="about-mini-title">Feeds RSS diretos usados no código</div>
+            <ul class="about-ul">
+              <li>g1 Economia — https://g1.globo.com/rss/g1/economia/</li>
+              <li>Agência Brasil Economia — https://agenciabrasil.ebc.com.br/rss/economia/feed.xml</li>
+              <li>InfoMoney — https://www.infomoney.com.br/feed/</li>
+              <li>Agência Brasil Política — https://agenciabrasil.ebc.com.br/rss/politica/feed.xml</li>
+              <li>CNM — https://www.cnm.org.br/rss</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <h3>Bing News (RSS)</h3>
+          <p>
+            O Bing News também fornece RSS de busca. O Radar envia as mesmas consultas e recebe matérias indexadas pela Microsoft.
+            Serve como fonte alternativa, ampliando cobertura.
+          </p>
+          <p class="muted">
+            Vantagem: diversifica resultados e reduz dependência de um único indexador.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PALAVRAS-CHAVE -->
+    <section class="about-section">
+      <h2>Palavras-chave monitoradas</h2>
+
+      <div class="about-card">
+        <h3>Royalties</h3>
+        <div class="about-pillbox">
+          royalties; royalties de petróleo; royalties do petróleo; royalties gás natural; royalties de gás natural; participação especial; compensação financeira;
+          royalties de petróleo; anp; agência nacional do petróleo; gás natural; exploração de petróleo; exploração de gás natural;
+          processo judicial anp; processo judicial royalties de petróleo; processo judicial royalties gás natural;
+          exploração; produção; perfuração; poço; poço exploratório; sísmica; levantamento sísmico; bloco exploratório; oferta permanente; leilão anp; rodada anp;
+          contrato de concessão; contrato de partilha; campo; campo produtor; entrada em produção; ramp-up;
+          offshore; onshore; plataforma; plataforma de petróleo; fpso; navio-plataforma; sonda; sonda de perfuração;
+          gasoduto; oleoduto; terminal marítimo; escoamento de produção;
+          pré-sal; presal; margem equatorial; bacia da foz do amazonas; bacia de campos; bacia de santos; bacia potiguar; bacia de sergipe-alagoas; bacia do recôncavo; bacia do parnaíba;
+          municípios confrontantes; redistribuição de royalties; lei dos royalties; ação judicial; stf; stj; tcu;
+          vazamento de óleo; derramamento de óleo; incidente em plataforma; paralisação de produção.
+        </div>
+      </div>
+
+      <div class="about-card" style="margin-top:18px;">
+        <h3>FPM</h3>
+        <div class="about-pillbox">
+          fpm; fundo de participação dos municipios; fundo de participação dos municípios; fundo de participação municipal;
+          ibge; censo; processo judicial fpm; majoração do coeficiente; coeficiente do fpm; coeficiente fpm;
+          coeficiente populacional; repasse fpm; transferência constitucional; revisão do coeficiente.
+        </div>
+      </div>
+    </section>
+
+    <!-- FONTES -->
+    <section class="about-section">
+      <h2>Fontes consideradas válidas (publishers)</h2>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Royalties</h3>
+          <div class="about-pillbox">
+            Valor Econômico; Reuters; Agência Brasil; g1; Estadão; Folha; O Globo; CNN Brasil; InfoMoney; Petrobras; ANP;
+            Agência Nacional do Petróleo; IBAMA; Portos e Navios; Brasil Energia; Offshore Energy; BNAmericas; Eixos; epbr.
+          </div>
+        </div>
+
+        <div class="about-card">
+          <h3>FPM</h3>
+          <div class="about-pillbox">
+            Agência Brasil; g1; Estadão; Folha; O Globo; UOL; CNN Brasil; InfoMoney; Valor Econômico; Consultor Jurídico; ConJur; CNM;
+            Confederação Nacional de Municípios; IBGE; STF; STJ; TCU; Agência Senado; Câmara dos Deputados; Senado.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="about-footnote">
+      Esta página existe para que a equipe de marketing entenda exatamente o que está sendo buscado e como os resultados são filtrados e ordenados.
+    </p>
+
+  </main>
+</body>
+</html>
