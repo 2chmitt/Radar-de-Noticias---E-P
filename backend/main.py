@@ -25,7 +25,17 @@ app.add_middleware(
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, "..", "frontend")
 
-app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+from starlette.responses import Response
+from starlette.staticfiles import StaticFiles
+
+class NoCacheStaticFiles(StaticFiles):
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "no-store"
+        return response
+
+app.mount("/static", NoCacheStaticFiles(directory=FRONTEND_DIR), name="static")
+
 
 @app.get("/")
 def serve_index():
@@ -35,139 +45,75 @@ def serve_index():
 def serve_fpm():
     return FileResponse(os.path.join(FRONTEND_DIR, "fpm.html"))
 
+@app.get("/sobre")
+def serve_sobre():
+    return FileResponse(os.path.join(FRONTEND_DIR, "sobre.html"))
+
 # =========================
 # CONFIG
 # =========================
-MIN_RELEVANCIA = 1  # mantém filtro mínimo (lógica original), só aumentamos termos/queries
+MIN_RELEVANCIA = 1
 TZ_BRASIL = timezone(timedelta(hours=-3))
 
 # =========================
 # PUBLISHERS
 # =========================
 ROYALTIES_PUBLISHERS = [
-    "Valor Econômico",
-    "Reuters",
-    "Agência Brasil",
-    "g1",
-    "Estadão",
-    "Folha",
-    "O Globo",
-    "CNN Brasil",
-    "InfoMoney",
-    "Petrobras",
-    "ANP",
-    "Agência Nacional do Petróleo",
-    "IBAMA",
-    "Portos e Navios",
-    "Brasil Energia",
-    "Offshore Energy",
-    "BNAmericas",
-    "Eixos",
-    "epbr",
+    "Valor Econômico","Reuters","Agência Brasil","g1","Estadão","Folha",
+    "O Globo","CNN Brasil","InfoMoney","Petrobras","ANP",
+    "Agência Nacional do Petróleo","IBAMA","Portos e Navios",
+    "Brasil Energia","Offshore Energy","BNAmericas","Eixos","epbr",
 ]
 
 FPM_PUBLISHERS = [
-    "Agência Brasil",
-    "g1",
-    "Estadão",
-    "Folha",
-    "O Globo",
-    "UOL",
-    "CNN Brasil",
-    "InfoMoney",
-    "Valor Econômico",
-    "Consultor Jurídico",
-    "ConJur",
-    "CNM",
-    "Confederação Nacional de Municípios",
-    "IBGE",
-    "STF",
-    "STJ",
-    "TCU",
-    "Agência Senado",
-    "Câmara dos Deputados",
-    "Senado",
+    "Agência Brasil","g1","Estadão","Folha","O Globo","UOL",
+    "CNN Brasil","InfoMoney","Valor Econômico","Consultor Jurídico",
+    "ConJur","CNM","Confederação Nacional de Municípios",
+    "IBGE","STF","STJ","TCU","Agência Senado",
+    "Câmara dos Deputados","Senado",
 ]
 
 # =========================
-# TERMOS (RELEVÂNCIA)
+# TERMOS (ORIGINAIS COMPLETOS)
 # =========================
 ROYALTIES_TERMS = [
-    # royalties base
-    "royalties", "royalties de petróleo", "royalties do petróleo",
-    "royalties gás natural", "royalties de gás natural",
-    "participação especial", "compensação financeira",
-
-    # termos adicionais (seu pedido)
-    "royalties de petróleo",
-    "anp",
-    "agência nacional do petróleo",
-    "gás natural",
-    "exploração de petróleo",
-    "exploração de gás natural",
-    "processo judicial anp",
-    "processo judicial royalties de petróleo",
-    "processo judicial royalties gás natural",
-
-    # exploração & produção
-    "exploração", "produção", "perfuração", "poço", "poço exploratório",
-    "sísmica", "levantamento sísmico",
-    "bloco exploratório", "oferta permanente", "leilão anp", "rodada anp",
-    "contrato de concessão", "contrato de partilha",
-    "campo", "campo produtor", "entrada em produção", "ramp-up",
-
-    # offshore/infra
-    "offshore", "onshore", "plataforma", "plataforma de petróleo",
-    "fpso", "navio-plataforma", "sonda", "sonda de perfuração",
-    "gasoduto", "oleoduto", "terminal marítimo", "escoamento de produção",
-
-    # bacias / regiões estratégicas
-    "pré-sal", "presal",
-    "margem equatorial",
-    "bacia da foz do amazonas",
-    "bacia de campos",
-    "bacia de santos",
-    "bacia potiguar",
-    "bacia de sergipe-alagoas",
-    "bacia do recôncavo",
-    "bacia do parnaíba",
-
-    # municipal/jurídico
-    "municípios confrontantes",
-    "redistribuição de royalties",
-    "lei dos royalties",
-    "ação judicial",
-    "stf",
-    "stj",
-    "tcu",
-
-    # incidentes
-    "vazamento de óleo",
-    "derramamento de óleo",
-    "incidente em plataforma",
+    "royalties","royalties de petróleo","royalties do petróleo",
+    "royalties gás natural","royalties de gás natural",
+    "participação especial","compensação financeira",
+    "anp","agência nacional do petróleo","gás natural",
+    "exploração de petróleo","exploração de gás natural",
+    "processo judicial anp","processo judicial royalties de petróleo",
+    "processo judicial royalties gás natural","exploração","produção",
+    "perfuração","poço","poço exploratório","sísmica",
+    "levantamento sísmico","bloco exploratório","oferta permanente",
+    "leilão anp","rodada anp","contrato de concessão",
+    "contrato de partilha","campo","campo produtor",
+    "entrada em produção","ramp-up","offshore","onshore",
+    "plataforma","plataforma de petróleo","fpso","navio-plataforma",
+    "sonda","sonda de perfuração","gasoduto","oleoduto",
+    "terminal marítimo","escoamento de produção","pré-sal","presal",
+    "margem equatorial","bacia da foz do amazonas",
+    "bacia de campos","bacia de santos","bacia potiguar",
+    "bacia de sergipe-alagoas","bacia do recôncavo",
+    "bacia do parnaíba","municípios confrontantes",
+    "redistribuição de royalties","lei dos royalties",
+    "ação judicial","stf","stj","tcu","vazamento de óleo",
+    "derramamento de óleo","incidente em plataforma",
     "paralisação de produção",
 ]
 
 FPM_TERMS = [
-    # termos base e os seus (com variações)
-    "fpm",
-    "fundo de participação dos municipios",
+    "fpm","fundo de participação dos municipios",
     "fundo de participação dos municípios",
-    "fundo de participação municipal",
-    "ibge",
-    "censo",
-    "processo judicial fpm",
-    "majoração do coeficiente",
-    "coeficiente do fpm",
-    "coeficiente fpm",
-    "coeficiente populacional",
-    "repasse fpm",
-    "transferência constitucional",
-    "revisão do coeficiente",
+    "fundo de participação municipal","ibge","censo",
+    "processo judicial fpm","majoração do coeficiente",
+    "coeficiente do fpm","coeficiente fpm",
+    "coeficiente populacional","repasse fpm",
+    "transferência constitucional","revisão do coeficiente",
 ]
 
 # =========================
-# FUNÇÕES (LÓGICA ORIGINAL)
+# FUNÇÕES ORIGINAIS
 # =========================
 def calcular_relevancia(texto: str, termos) -> int:
     t = (texto or "").lower()
@@ -199,9 +145,11 @@ def janela_datas(dias: int):
         fim = agora
     return inicio, fim
 
-def buscar_generico(dias: int, termos, publishers, queries):
+# =========================
+# MÉTODO GOOGLE (ORIGINAL)
+# =========================
+def buscar_google(dias, termos, publishers, queries):
     inicio, fim = janela_datas(dias)
-
     resultados = []
     vistos = set()
 
@@ -217,7 +165,6 @@ def buscar_generico(dias: int, termos, publishers, queries):
             if not entry.get("published_parsed"):
                 continue
 
-            # UTC -> Brasil (correto)
             data_utc = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
             data_pub = data_utc.astimezone(TZ_BRASIL)
 
@@ -250,11 +197,116 @@ def buscar_generico(dias: int, termos, publishers, queries):
     return resultados
 
 # =========================
+# RSS DIRETO
+# =========================
+RSS_FEEDS_ROYALTIES = [
+    "https://g1.globo.com/rss/g1/economia/",
+    "https://agenciabrasil.ebc.com.br/rss/economia/feed.xml",
+    "https://www.infomoney.com.br/feed/",
+]
+
+RSS_FEEDS_FPM = [
+    "https://agenciabrasil.ebc.com.br/rss/politica/feed.xml",
+    "https://www.cnm.org.br/rss",
+]
+
+def buscar_rss(dias, termos, publishers, feeds):
+    inicio, fim = janela_datas(dias)
+    resultados = []
+    vistos = set()
+
+    for feed_url in feeds:
+        feed = feedparser.parse(feed_url)
+
+        for entry in feed.entries:
+            if not entry.get("published_parsed"):
+                continue
+
+            data_utc = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
+            data_pub = data_utc.astimezone(TZ_BRASIL)
+
+            if not (inicio <= data_pub <= fim):
+                continue
+
+            link = getattr(entry, "link", "") or ""
+            if not link or link in vistos:
+                continue
+            vistos.add(link)
+
+            publisher = feed.feed.get("title", "RSS")
+            if not publisher_valido(publisher, publishers):
+                continue
+
+            texto = f"{getattr(entry,'title','')} {getattr(entry,'summary','')}"
+            relev = calcular_relevancia(texto, termos)
+            if relev < MIN_RELEVANCIA:
+                continue
+
+            resultados.append({
+                "titulo": getattr(entry, "title", ""),
+                "link": link,
+                "data": data_pub.strftime("%d/%m/%Y"),
+                "fonte": publisher,
+                "relevancia": relev
+            })
+
+    resultados.sort(key=lambda x: (x["relevancia"], x["data"]), reverse=True)
+    return resultados
+
+# =========================
+# BING
+# =========================
+def buscar_bing(dias, termos, publishers, queries):
+    inicio, fim = janela_datas(dias)
+    resultados = []
+    vistos = set()
+
+    for q in queries:
+        query = urllib.parse.quote(q)
+        url = f"https://www.bing.com/news/search?q={query}&format=rss"
+        feed = feedparser.parse(url)
+
+        for entry in feed.entries:
+            if not entry.get("published_parsed"):
+                continue
+
+            data_utc = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
+            data_pub = data_utc.astimezone(TZ_BRASIL)
+
+            if not (inicio <= data_pub <= fim):
+                continue
+
+            link = getattr(entry, "link", "") or ""
+            if not link or link in vistos:
+                continue
+            vistos.add(link)
+
+            publisher = "Bing News"
+            texto = f"{getattr(entry,'title','')} {getattr(entry,'summary','')}"
+            relev = calcular_relevancia(texto, termos)
+            if relev < MIN_RELEVANCIA:
+                continue
+
+            resultados.append({
+                "titulo": getattr(entry, "title", ""),
+                "link": link,
+                "data": data_pub.strftime("%d/%m/%Y"),
+                "fonte": publisher,
+                "relevancia": relev
+            })
+
+    resultados.sort(key=lambda x: (x["relevancia"], x["data"]), reverse=True)
+    return resultados
+
+# =========================
 # ENDPOINTS
 # =========================
 @app.get("/buscar-royalties")
-def buscar_royalties(dias: int = Query(7, ge=1, le=60)):
-    # Multi-queries robustas (mantém lógica; só ampliamos)
+def buscar_royalties(
+    dias: int = Query(7, ge=1, le=60),
+    metodo: str = Query("google")
+):
+
     queries = [
         "royalties de petróleo Brasil",
         "royalties gás natural Brasil",
@@ -273,16 +325,27 @@ def buscar_royalties(dias: int = Query(7, ge=1, le=60)):
         "leilão ANP petróleo gás",
     ]
 
-    resultados = buscar_generico(dias, ROYALTIES_TERMS, ROYALTIES_PUBLISHERS, queries)
+    if metodo == "rss":
+        resultados = buscar_rss(dias, ROYALTIES_TERMS, ROYALTIES_PUBLISHERS, RSS_FEEDS_ROYALTIES)
+    elif metodo == "bing":
+        resultados = buscar_bing(dias, ROYALTIES_TERMS, ROYALTIES_PUBLISHERS, queries)
+    else:
+        resultados = buscar_google(dias, ROYALTIES_TERMS, ROYALTIES_PUBLISHERS, queries)
+
     return {
         "tipo": "Royalties de Petróleo",
         "periodo": "Hoje" if dias == 1 else f"Últimos {dias} dias",
+        "metodo": metodo.capitalize(),
         "quantidade": len(resultados),
         "noticias": resultados
     }
 
 @app.get("/buscar-fpm")
-def buscar_fpm(dias: int = Query(7, ge=1, le=60)):
+def buscar_fpm(
+    dias: int = Query(7, ge=1, le=60),
+    metodo: str = Query("google")
+):
+
     queries = [
         "FPM",
         "Fundo de Participação dos Municípios",
@@ -296,10 +359,17 @@ def buscar_fpm(dias: int = Query(7, ge=1, le=60)):
         "repasse FPM municípios",
     ]
 
-    resultados = buscar_generico(dias, FPM_TERMS, FPM_PUBLISHERS, queries)
+    if metodo == "rss":
+        resultados = buscar_rss(dias, FPM_TERMS, FPM_PUBLISHERS, RSS_FEEDS_FPM)
+    elif metodo == "bing":
+        resultados = buscar_bing(dias, FPM_TERMS, FPM_PUBLISHERS, queries)
+    else:
+        resultados = buscar_google(dias, FPM_TERMS, FPM_PUBLISHERS, queries)
+
     return {
         "tipo": "FPM",
         "periodo": "Hoje" if dias == 1 else f"Últimos {dias} dias",
+        "metodo": metodo.capitalize(),
         "quantidade": len(resultados),
         "noticias": resultados
     }
