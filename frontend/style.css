@@ -1,24 +1,47 @@
 /* =====================================
    RESET
 ===================================== */
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
+/* =====================================
+   FUNDO (CORRIGE O "CORTE" NO MEIO)
+   - em vez de gradiente direto no body (banding),
+     usamos um overlay fixo e suave.
+===================================== */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: linear-gradient(180deg, #0b1220 0%, #0f1b33 100%);
+  background: #0b1220;
   color: #e6edf3;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  /* fundo suave sem "degrau" */
+  background:
+    radial-gradient(1200px 700px at 15% 15%, rgba(0, 113, 227, 0.12), transparent 60%),
+    radial-gradient(900px 600px at 85% 35%, rgba(0, 179, 107, 0.08), transparent 60%),
+    linear-gradient(180deg, #0b1220 0%, #0f1b33 100%);
 }
 
 /* =====================================
    TEMAS
 ===================================== */
-
 body.theme-royalties {
   --accent: #0071e3;
   --accent-soft: rgba(0, 113, 227, 0.15);
@@ -34,7 +57,6 @@ body.theme-fpm {
 /* =====================================
    HEADER
 ===================================== */
-
 .header {
   display: flex;
   align-items: center;
@@ -53,7 +75,6 @@ body.theme-fpm {
 /* =====================================
    TABS
 ===================================== */
-
 .tabs {
   display: flex;
   gap: 12px;
@@ -84,7 +105,6 @@ body.theme-fpm {
 /* =====================================
    CONTROLS
 ===================================== */
-
 .controls {
   display: flex;
   align-items: center;
@@ -124,7 +144,6 @@ body.theme-fpm {
 /* =====================================
    CONTAINER
 ===================================== */
-
 .container {
   padding: 40px;
   max-width: 1400px;
@@ -140,7 +159,6 @@ body.theme-fpm {
 /* =====================================
    GRID
 ===================================== */
-
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -150,7 +168,6 @@ body.theme-fpm {
 /* =====================================
    CARD (Estilo Apple)
 ===================================== */
-
 .card {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
@@ -204,7 +221,6 @@ body.theme-fpm {
 /* =====================================
    RELEVÂNCIA VISUAL
 ===================================== */
-
 .card-medium {
   border: 1px solid rgba(255, 193, 7, 0.7);
   background: rgba(255, 193, 7, 0.12);
@@ -218,9 +234,7 @@ body.theme-fpm {
 /* =====================================
    RESPONSIVO
 ===================================== */
-
 @media (max-width: 768px) {
-
   .header {
     flex-direction: column;
     gap: 12px;
@@ -239,4 +253,124 @@ body.theme-fpm {
   .container {
     padding: 20px;
   }
+}
+
+/* =====================================
+   SOBRE (Apple, contraste e leitura)
+===================================== */
+.about-wrapper {
+  max-width: 1100px;
+}
+
+.about-section {
+  margin-bottom: 56px;
+}
+
+.about-section h1 {
+  font-size: 32px;
+  color: var(--accent);
+  margin-bottom: 18px;
+  letter-spacing: -0.2px;
+}
+
+.about-section h2 {
+  font-size: 24px;
+  color: #ffffff;
+  margin-bottom: 18px;
+  letter-spacing: -0.2px;
+}
+
+.about-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 22px;
+  padding: 28px;
+  backdrop-filter: blur(10px);
+}
+
+.about-card h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.about-card p {
+  font-size: 14px;
+  line-height: 1.75;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+.muted {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+.about-steps {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.about-step {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.about-step-title {
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.about-step-text {
+  font-size: 13px;
+  line-height: 1.65;
+  opacity: 0.9;
+}
+
+.about-mini {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.about-mini-title {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.about-ul {
+  margin-left: 18px;
+  line-height: 1.7;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.about-pillbox {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.85;
+  opacity: 0.95;
+  word-break: break-word;
+}
+
+.about-footnote {
+  margin-top: 28px;
+  font-size: 13px;
+  opacity: 0.65;
 }
