@@ -374,3 +374,34 @@ body.theme-fpm {
   font-size: 13px;
   opacity: 0.65;
 }
+
+/* ===== FIX VAZAMENTO TEXTO SOBRE ===== */
+
+.about-card,
+.about-pillbox {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow: hidden;
+}
+
+.about-card ul,
+.about-ul {
+  padding-left: 18px;
+}
+
+.about-card li {
+  margin-bottom: 6px;
+}
+
+.about-card a {
+  word-break: break-all;
+}
+
+.about-grid {
+  align-items: stretch;
+}
+
+.about-card {
+  display: flex;
+  flex-direction: column;
+}
